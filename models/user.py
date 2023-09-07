@@ -1,8 +1,8 @@
 import sqlalchemy
-from sqlalchemy import Table, Column, Integer, String, Enum
-from models.enums import RoleType
-from db_api import metadata
+from sqlalchemy import Column, Enum, Integer, String, Table
 
+from db_api import metadata
+from models.enums import RoleType
 
 user = Table(
     "users",

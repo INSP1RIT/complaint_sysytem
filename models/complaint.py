@@ -1,5 +1,6 @@
-from db_api import metadata
 import sqlalchemy
+
+from db_api import metadata
 from models.enums import State
 
 complaint = sqlalchemy.Table(
