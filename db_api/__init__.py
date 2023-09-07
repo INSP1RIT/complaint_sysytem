@@ -1,4 +1,4 @@
-__all__ = ['metadata']
+__all__ = ['metadata', 'database']
 
 import databases
 import sqlalchemy
