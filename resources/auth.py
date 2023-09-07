@@ -12,3 +12,11 @@ async def register(user_data):
     return {
         "token": token
     }
+
+
+@router.post("/login/")
+async def login(user_data):
+    token = UserManager.login(user_data)
+    return {
+        "token": token
+    }
