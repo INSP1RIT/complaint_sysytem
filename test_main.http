@@ -1,11 +1,14 @@
 # Test your FastAPI endpoints
 
-GET http://127.0.0.1:8000/
+POST http://localhost:8000/register/
 Accept: application/json
+Content-Type: application/json
 
-###
-
-GET http://127.0.0.1:8000/hello/User
-Accept: application/json
-
-###
+{
+  "email": "niggarek@gmail.com",
+  "password": "supersecret2",
+  "phone": "79822315620",
+  "first_name": "Nigga",
+  "last_name": "Gansta",
+  "iban": "AL47 2121 1009 0000 0002 3369 87411"
+}
