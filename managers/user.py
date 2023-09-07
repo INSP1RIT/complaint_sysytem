@@ -35,7 +35,7 @@ class UserManager:
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Wrong email passed"
             )
-        elif not pwd_context.verify(user_obj['password'], user_obj['password']):
+        elif not pwd_context.verify(user_data['password'], user_obj['password']):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Wrong password or email"

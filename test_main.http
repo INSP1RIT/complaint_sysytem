@@ -5,10 +5,21 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "email": "niggarek@gmail.com",
+  "email": "niggarechek@gmail.com",
   "password": "supersecret2",
   "phone": "79822315620",
   "first_name": "Nigga",
   "last_name": "Gansta",
   "iban": "AL47 2121 1009 0000 0002 3369 87411"
+}
+
+###
+
+POST http://localhost:8000/login/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "Sumer"
 }
