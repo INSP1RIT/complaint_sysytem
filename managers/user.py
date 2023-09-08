@@ -13,9 +13,7 @@ class UserManager:
     @staticmethod
     async def register(user_data):
 
-
         user_data['password'] = pwd_context.hash(user_data['password'])
-        #user_data.password = pwd_context.hash(user_data.password)
         try:
             id_ = await database.execute(user.insert().values(**user_data))
         except UniqueViolationError:
