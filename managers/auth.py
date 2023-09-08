@@ -9,16 +9,16 @@ from starlette import status
 from starlette.requests import Request
 
 from db_api import database
-from models import user
+from models import user, RoleType
 
 
 class AuthManager:
 
     @staticmethod
-    def encode_token(user):
+    def encode_token(income_user):
         try:
             payload = {
-                "sub": user["id"],
+                "sub": income_user["id"],
                 "exp": datetime.utcnow() + timedelta(minutes=120)
             }
 
@@ -47,3 +47,24 @@ class CustomHTTPBearer(HTTPBearer):
         except jwt.InvalidTokenError:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail='Invalid token')
+
+
+def is_complainer(request: Request):
+    if not request.state.user['role'] == RoleType.complainer:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to create new complaint")
+
+
+def is_approver(request: Request):
+    if not request.state.user['role'] == RoleType.approver:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to accept or reject complaint")
+
+
+def is_admin(request: Request):
+    if not request.state.user['role'] == RoleType.admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to accept or reject complaint")
