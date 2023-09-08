@@ -9,7 +9,7 @@ from starlette import status
 from starlette.requests import Request
 
 from db_api import database
-from models import user, RoleType
+from models import RoleType, user
 
 
 class AuthManager:
@@ -48,6 +48,7 @@ class CustomHTTPBearer(HTTPBearer):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                                 detail='Invalid token')
 
+oauth2_scheme = CustomHTTPBearer()
 
 def is_complainer(request: Request):
     if not request.state.user['role'] == RoleType.complainer:
