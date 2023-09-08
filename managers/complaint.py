@@ -1,5 +1,5 @@
 from db_api import database
-from models import RoleType, State, complaint
+from models import RoleType, State, complaint, user
 
 
 class ComplaintManager:
@@ -23,3 +23,4 @@ class ComplaintManager:
     @staticmethod
     async def delete_complaint(complaint_id):
         await database.execute(complaint.delete().where(complaint.c.id == complaint_id))
+
