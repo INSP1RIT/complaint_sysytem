@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-from resources import api_router
+
 from db_api import database
+from resources import api_router
 
 app = FastAPI()
 app.include_router(api_router)

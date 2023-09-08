@@ -1,5 +1,5 @@
 from db_api import database
-from models import complaint, RoleType, State
+from models import RoleType, State, complaint
 
 
 class ComplaintManager:

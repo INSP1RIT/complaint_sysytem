@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from resources import auth
 
 api_router = APIRouter()

@@ -1,9 +1,10 @@
-from passlib.context import CryptContext
 from asyncpg import UniqueViolationError
+from fastapi import HTTPException, status
+from passlib.context import CryptContext
+
 from db_api import database
 from managers.auth import AuthManager
 from models import user
-from fastapi import HTTPException, status
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
