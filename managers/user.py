@@ -3,23 +3,22 @@ from fastapi import HTTPException, status
 from passlib.context import CryptContext
 
 from db_api import database
-from managers.auth import AuthManager
-from models import user, RoleType, complaint, State
+from managers import AuthManager
+from models import user, RoleType
 
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class UserManager:
     @staticmethod
     async def register(user_data):
-
-        user_data['password'] = pwd_context.hash(user_data['password'])
+        user_data["password"] = pwd_context.hash(user_data["password"])
         try:
             id_ = await database.execute(user.insert().values(**user_data))
         except UniqueViolationError:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="User with this email already exists"
+                detail="User with this email already exists",
             )
         user_obj = await database.fetch_one(user.select().where(user.c.id == id_))
 
@@ -27,17 +26,18 @@ class UserManager:
 
     @staticmethod
     async def login(user_data):
-        user_obj = await database.fetch_one(user.select().where(user.c.email == user_data['email']))
+        user_obj = await database.fetch_one(
+            user.select().where(user.c.email == user_data["email"])
+        )
 
         if not user_obj:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Wrong email passed"
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Wrong email passed"
             )
-        elif not pwd_context.verify(user_data['password'], user_obj['password']):
+        elif not pwd_context.verify(user_data["password"], user_obj["password"]):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Wrong password or email"
+                detail="Wrong password or email",
             )
 
         return AuthManager.encode_token(user_obj)
@@ -52,6 +52,6 @@ class UserManager:
 
     @staticmethod
     async def change_role(role: RoleType, user_id):
-        await database.execute(user.update().where(user.c.id == user_id).values(role=role))
-
-
+        await database.execute(
+            user.update().where(user.c.id == user_id).values(role=role)
+        )

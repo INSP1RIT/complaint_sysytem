@@ -13,6 +13,11 @@ user = Table(
     Column("first_name", String(200)),
     Column("last_name", String(200)),
     Column("phone", String(20)),
-    Column("role", sqlalchemy.Enum(RoleType), nullable=False, server_default=RoleType.complainer.name),
-    Column("iban", String(200))
+    Column(
+        "role",
+        sqlalchemy.Enum(RoleType),
+        nullable=False,
+        server_default=RoleType.complainer.name,
+    ),
+    Column("iban", String(200)),
 )

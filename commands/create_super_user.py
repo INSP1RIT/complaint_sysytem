@@ -20,7 +20,7 @@ async def create_user(first_name, last_name, email, phone, iban, password):
         "phone": phone,
         "iban": iban,
         "password": password,
-        "role": RoleType.admin
+        "role": RoleType.admin,
     }
 
     await database.connect()
@@ -28,5 +28,5 @@ async def create_user(first_name, last_name, email, phone, iban, password):
     await database.disconnect()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     create_user(_anyio_backend="asyncio")
