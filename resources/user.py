@@ -2,8 +2,8 @@ from typing import Optional, List
 
 from fastapi import APIRouter, Depends
 
-from managers.auth import oauth2_scheme, is_admin
 from managers import UserManager
+from managers.auth import oauth2_scheme, is_admin
 from models import RoleType
 from schemas.response.user import UserOut
 

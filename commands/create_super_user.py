@@ -1,8 +1,8 @@
 import asyncclick as click
 
+from db_api import database
 from managers import UserManager
 from models import RoleType
-from db_api import database
 
 
 @click.command()

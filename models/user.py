@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import Column, Enum, Integer, String, Table
+from sqlalchemy import Column, Integer, String, Table
 
 from db_api import metadata
 from models.enums import RoleType

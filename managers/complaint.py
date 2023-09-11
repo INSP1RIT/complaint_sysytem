@@ -1,5 +1,14 @@
+import os
+import uuid
+
+from constants import TEMP_FILE_FOLDER
 from db_api import database
-from models import RoleType, State, complaint, user
+from models import RoleType, State, complaint
+from utils.helper import decode_photo
+from services import S3Service, SESService
+
+s3 = S3Service()
+ses = SESService()
 
 
 class ComplaintManager:
@@ -15,8 +24,17 @@ class ComplaintManager:
         return await database.fetch_all(q)
 
     @staticmethod
-    async def create_complaint(complaint_data, user):
+    async def create_complaint(complaint_data: dict, user):
         complaint_data["complainer_id"] = user["id"]
+        encoded_photo = complaint_data.pop("encoded_photo")
+        extension = complaint_data.pop("extension")
+        name = f"{uuid.uuid4()}.{extension}"
+        path = os.path.join(TEMP_FILE_FOLDER, name)
+        decode_photo(path, encoded_photo)
+
+        complaint_data["photo_url"] = s3.upload(path, name, extension)
+        os.remove(path)
+
         id_ = await database.execute(complaint.insert().values(complaint_data))
         return await database.fetch_one(complaint.select().where(complaint.c.id == id_))
 
@@ -30,6 +48,11 @@ class ComplaintManager:
             complaint.update()
             .where(complaint.c.id == id_)
             .values(status=State.approved)
+        )
+        ses.send_mail(
+            "Complaint approved",
+            ["abisher72@gmail.com"],
+            "Congratulations! Your complaint has been approved. Check your bank account for refund.",
         )
 
     @staticmethod

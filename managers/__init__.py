@@ -10,5 +10,5 @@ __all__ = [
 ]
 
 from .auth import AuthManager, oauth2_scheme, is_admin, is_complainer, is_approver
-from .user import UserManager, pwd_context
 from .complaint import ComplaintManager
+from .user import UserManager, pwd_context
