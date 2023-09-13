@@ -2,7 +2,7 @@
 <project version="4">
   <component name="Black">
     <option name="enabledOnReformat" value="true" />
-    <option name="sdkUUID" value="7a2bbf8a-30fe-4e6f-9222-bf7203e930e2" />
+    <option name="sdkName" value="Python 3.11 (customer_complaint_system)" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (customer_complaint_system)" project-jdk-type="Python SDK" />
   <component name="accountSettings">

@@ -4,8 +4,8 @@ import uuid
 from constants import TEMP_FILE_FOLDER
 from db_api import database
 from models import RoleType, State, complaint
-from utils.helper import decode_photo
 from services import S3Service, SESService
+from utils.helper import decode_photo
 
 s3 = S3Service()
 ses = SESService()
