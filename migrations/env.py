@@ -4,6 +4,7 @@ from alembic import context
 from decouple import config as env_config
 from sqlalchemy import engine_from_config, pool
 
+import models
 from db_api import metadata
 
 # this is the Alembic Config object, which provides

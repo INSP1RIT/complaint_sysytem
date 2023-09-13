@@ -3,8 +3,9 @@ import uuid
 
 from constants import TEMP_FILE_FOLDER
 from db_api import database
-from models import RoleType, State, complaint
+from models import RoleType, State, complaint, transaction
 from services import S3Service, SESService
+from services.wise import WiseService
 from utils.helper import decode_photo
 
 s3 = S3Service()
@@ -36,6 +37,10 @@ class ComplaintManager:
         os.remove(path)
 
         id_ = await database.execute(complaint.insert().values(complaint_data))
+        await ComplaintManager.issue_transaction(
+            complaint_data["amount"], f"{user['first_name']} {user['last_name']}"
+        , user['iban'], id_)
+
         return await database.fetch_one(complaint.select().where(complaint.c.id == id_))
 
     @staticmethod
@@ -62,3 +67,23 @@ class ComplaintManager:
             .where(complaint.c.id == id_)
             .values(status=State.rejected)
         )
+
+    @staticmethod
+    async def issue_transaction(amount, full_name, iban, complaint_id):
+        wise = WiseService()
+
+        quote_id = await wise.create_quote(amount)
+        recipient_id = await wise.create_recipient_account(full_name, iban)
+        transfer_id = await wise.create_transfer(recipient_id, quote_id)
+
+        data = {
+            "quote_id": quote_id,
+            "transfer_id": transfer_id,
+            "target_account_id": str(recipient_id),
+            "amount": amount,
+            "complaint_id": complaint_id,
+        }
+
+        await database.execute(transaction.insert().values(**data))
+
+        # res = await wise.fund_transfer(transfer_id)

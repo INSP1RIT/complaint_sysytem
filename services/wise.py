@@ -16,12 +16,6 @@ class WiseService:
         self.secret_key = config("SECRET_KEY")
         self.profile_id = asyncio.run(self._get_profile_id())
 
-    # def _get_profile_id(self):
-    #     url = "https://api.sandbox.transferwise.tech/v2/profiles"
-    #     response = requests.get(url, headers=self.headers)
-    #
-    #     a = 5
-
     async def _get_profile_id(self):
         url = f"{self.main_url}/v2/profiles"
         async with aiohttp.ClientSession() as session:
@@ -100,17 +94,14 @@ class WiseService:
                 except Exception as ex:
                     print(await response.text())
 
-
     async def fund_transfer(self, transfer_id):
-        url = (
-            f"{self.main_url}/v3/profiles/{self.profile_id}/transfers/{transfer_id}/payments"
-        )
-        data = {"type": "balance"}
+        url = f"{self.main_url}/v3/profiles/{self.profile_id}/transfers/{transfer_id}/payments"
+        data = {"type": "BALANCE"}
 
         async with aiohttp.ClientSession() as session:
             async with session.post(url, headers=self.headers, json=data) as response:
                 try:
-                    if response.status == 400:
+                    if response.status == 201:
                         res = await response.json()
                         return res
                     raise HTTPException(
@@ -118,7 +109,7 @@ class WiseService:
                         detail="Payment provider is not available at the moment",
                     )
                 except Exception as ex:
-                    print(ex.args)
+                    print("SUKA")
                     print(await response.text())
 
 
